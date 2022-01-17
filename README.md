@@ -51,7 +51,7 @@ https://strimzi.io/docs/operators/latest/using.html#assembly-deployment-configur
 
 
 # Topics
-k get kafka,kafkatopic -n ${ns}
+kubectl get kafka,kafkatopic -n ${ns}
 
 ## Create a topic
 ```shell=
@@ -75,19 +75,13 @@ spec:
 ```shell=
 kubectl run kafka-producer -ti --image=quay.io/strimzi/kafka:0.27.0-kafka-3.0.0 -n ${ns} --rm=true --restart=Never -- bin/kafka-console-producer.sh --broker-list yogi-kafka-kafka-bootstrap:9092 --topic test-topic
 
-
-
 kubectl run kafka-consumer -ti --image=quay.io/strimzi/kafka:0.27.0-kafka-3.0.0 -n ${ns} --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server yogi-kafka-kafka-bootstrap:9092 --topic test-topic --from-beginning
 
 
-
-
-kubectl run kafka-admin -ti --image=quay.io/strimzi/kafka:0.27.0-kafka-3.0.0 --rm=true --restart=Never -- ./bin/kafka-topics.sh --bootstrap-server localhost:9092 --topic __strimzi-topic-operator-kstreams-topic-store-changelog --delete && ./bin/kafka-topics.sh --bootstrap-server localhost:9092 --topic __strimzi_store_topic --delete
-
-
+kubectl run kafka-admin -ti --image=quay.io/strimzi/kafka:0.27.0-kafka-3.0.0 --rm=true --restart=Never -- ./bin/kafka-topics.sh --bootstrap-server localhost:9092 --topic __strimzi-topic-operator-kstreams-topic-store-changelog --delete && ./bin/kafka-topics.sh --bootstrap-server localhost:9092 --topic test-topic --delete
 
 kubectl run kafka-admin -ti --image=quay.io/strimzi/kafka:0.27.0-kafka-3.0.0 -n ${ns} -- sh
+```
 
-
-# Resources
-k get kafkatopic -nkafka
+# Kafka Resources
+kubectl get kafkatopic -nkafka
